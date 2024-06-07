@@ -1,0 +1,33 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DB_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Teacher {
+  attendanceHistories AttendanceHistory[]
+  createdAt           DateTime            @default(now())
+  date                DateTime?
+  email               String?
+  id                  String              @id @default(cuid())
+  name                String?
+  phone               String?
+  role                String?
+  status              String?
+  updatedAt           DateTime            @updatedAt
+}
+
+model AttendanceHistory {
+  checkIn   DateTime?
+  checkOut  DateTime?
+  createdAt DateTime  @default(now())
+  date      DateTime?
+  id        String    @id @default(cuid())
+  status    String?
+  teacher   Teacher?  @relation(fields: [teacherId], references: [id])
+  teacherId String?
+  updatedAt DateTime  @updatedAt
+}
